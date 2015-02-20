@@ -6,14 +6,16 @@ A very basic photo slideshow application.
 Features
 --------
 * Will search a directory recursively for images
+* Resizes images on the fly to fit on the screen
 * Configurable delay between images
 * Overlays each image with timestamp, caption, and Windows descriptive tags (if present)
+* Can hide manufacturer default captions
 * Allows you to skip forward and back
 
 To run
 ------
 * Install a JRE if you don't already have one
-* Download Slideshow.zip and unzip into a location of your choice
+* Download Slideshow.zip (https://bitbucket.org/jmetcher/slideshow/downloads/Slideshow.zip) and unzip into a location of your choice
 * Edit config.properties
 * Run `run.bat` (Windows) or `run.sh` (Linux)
 
@@ -29,7 +31,7 @@ You do not need to quote the path even if it contains spaces.
 On Windows, use / as the path separator.
 The path is case sensitive or not, according to the native behaviour of the OS.
 Slideshow will recurse down into subfolders.
-At present, you can not specify multiplefolders
+At present, you can not specify multiple folders
 
 **extensions**
 A comma-separated list of file extensions.  Any files in `source` that don't have one of these extensions will be ignored.
@@ -49,8 +51,11 @@ Configuration options are not hot-reloaded.  If you edit the config file, close 
 Commands
 --------
 Click anywhere = exit
+
 esc key = exit
+
 left arrow (non-numpad) = previous photo
+
 right arrow (non-numpad) = next photo
 
 To build
@@ -85,6 +90,7 @@ Slideshow is not production code and has not been tested on a wide range of JREs
 Acknowledgements
 ----------------
 Thanks to Drew Noakes for his excellent [Metadata Extractor](https://drewnoakes.com/code/exif/)
+
 Thanks to Sun and Oracle for doing literally _all_ the hard bits.  Nearly everything I thought might be tricky was already there in the Java standard libraries.
 
 Licensing
