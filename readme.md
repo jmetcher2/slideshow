@@ -50,13 +50,11 @@ Configuration options are not hot-reloaded.  If you edit the config file, close 
 
 Commands
 --------
-Click anywhere = exit
+esc key or middle mouse click = exit
 
-esc key = exit
+left arrow or left mouse click = previous photo
 
-left arrow (non-numpad) = previous photo
-
-right arrow (non-numpad) = next photo
+right arrow or right mouse click = next photo
 
 To build
 ---------
@@ -80,6 +78,10 @@ Known issues
 * Errors are not handled gracefully.  If anything is not where Slideshow expects it to be (e.g. the config file), you'll get at least a stack trace and probably an abrupt exit as well.  Do send me the stack trace if this happens :)
 * Slideshow keeps an in-memory list of the full paths to all images in the specified folder.  If you give it a filesystem with millions of files, it will probably run out of memory.
 * Likewise, Slideshow does not do any sanity checks on the size of images.  It works fine with my 12MP images, but you could give it arbitrarily large images and cause problems.
+
+Note: resizing images on the fly takes a fair bit of processing power.  If you want to minimise resource usage, pre-process your images to be no bigger than the physical screen size.  This will also reduce disk traffic.  On most computers you'll never notice the overhead, but very slow or very busy computers might appreciate the break, and you'll save a few milliwatts.
+
+To give you an idea of the overhead range: The very low-end all-in-one PC that I use as a digital photo frame takes about 1.3 seconds to load a 12 megapixel image from disk, resize it, and display it.  My high end development machine takes about 65 milliseconds to load and display a 0.8 megapixel image that doesn't need resizing.
 
 Disclaimer
 ----------

@@ -146,6 +146,18 @@ public class ShowImage extends JFrame implements ActionListener {
 	}
 
 
+	void doRight() {
+		nextImage();
+		repaint();
+		timer.restart();
+	}
+
+	void doLeft() {
+		currentIndex = currentIndex - 2;
+		if (currentIndex < 0) currentIndex = files.size() - 1;
+		doRight();
+	}
+	
 	public final class ShowImageKeyListener implements KeyListener {
 		@Override
 		public void keyTyped(KeyEvent e) {
@@ -161,26 +173,15 @@ public class ShowImage extends JFrame implements ActionListener {
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 				System.exit(0);
-			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_KP_LEFT) {
 				doLeft();
 			}
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_KP_RIGHT) {
 				doRight();
 			}
+			
 		}
 
-		private void doRight() {
-			nextImage();
-			repaint();
-			timer.restart();
-		}
-
-		private void doLeft() {
-			currentIndex = currentIndex - 2;
-			if (currentIndex < 0) currentIndex = files.size() - 1;
-			doRight();
-		}
-		
 	}
 
 }
