@@ -46,6 +46,9 @@ The time in seconds between photos
 **exclude_captions**
 A comma-separated list of photo captions that will not be displayed.  That is, the photo will still be displayed, but the caption won't.  This is to get around the habit of camera manufacturers of supplying a default caption of THEIR OWN BRAND IN UPPERCASE.
 
+**fontSize**
+Font size for metadata in pixels.
+
 Configuration options are not hot-reloaded.  If you edit the config file, close and restart Slideshow.
 
 Commands
@@ -55,6 +58,8 @@ esc key or middle mouse click = exit
 left arrow or left mouse click = previous photo
 
 right arrow or right mouse click = next photo
+
+pause key = pause/resume the slideshow
 
 To build
 ---------

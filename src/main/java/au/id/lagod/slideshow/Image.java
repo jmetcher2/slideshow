@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +67,7 @@ public class Image {
 		g.drawImage(img, (int) translateX, (int) translateY, (int) scaledWidth, (int) scaledHeight, Color.black, showImage);
 	}
 	
-	public void drawMetadataOnto(BufferedImage dest, List<String> excludedCaptionsList)
+	public void drawMetadataOnto(BufferedImage dest, List<String> excludedCaptionsList, Integer fontSize)
 			throws UnsupportedEncodingException {
 		Graphics g = dest.getGraphics();
 
@@ -84,16 +86,25 @@ public class Image {
 		}
 		caption = caption.trim();
 		Date date = exifid0.getDate(ExifIFD0Directory.TAG_DATETIME);
+		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
+		dateFormat.applyPattern("yyyy, MMMMM dd (h:mm a)");
+		String dateString = dateFormat.format(date);
 
+		Integer baseLine = fontSize;
+		Integer lineSpacing = (int) (fontSize*1.5);
+		
 		g.setColor ( Color.WHITE );
-	    g.drawString(date.toString(), 10, 15);
-	    g.setFont(g.getFont().deriveFont(15f));
-	    if (!excludedCaptionsList.contains(caption))
-	    	g.drawString(caption, 10, 40);
-	    int lineOffset = 40;
+	    g.setFont(g.getFont().deriveFont((float) fontSize));
+	    
+	    g.drawString(dateString, 10, baseLine);
+	    
+	    if (!excludedCaptionsList.contains(caption)) {
+		    baseLine += lineSpacing;
+	    	g.drawString(caption, 10, baseLine);
+	    }
 	    for (String tag: tagList) {
-	    	lineOffset += 25;
-		    g.drawString(tag, 10, lineOffset);
+		    baseLine += lineSpacing;
+		    g.drawString(tag, 10, baseLine);
 	    }
 	}
 

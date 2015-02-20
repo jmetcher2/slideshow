@@ -32,14 +32,16 @@ public class ShowImage extends JFrame implements ActionListener {
 	private BufferedImage screenImage;
 	private Timer timer;
 	private List<Path> files = new ArrayList<Path>(0);
-	private int currentIndex = 0;
+	private int nextIndex = 0;
 	private List<String> excludedCaptionsList;
+	private Integer fontSize;
 
    // Class constructor  
 	ShowImage(Properties props, List<Path> files) throws IOException, ImageProcessingException {
 		this.files = files;
 
 		excludedCaptionsList = Arrays.asList(props.getProperty("exclude_captions").split("\\s*,\\s*"));
+		fontSize = Integer.decode(props.getProperty("fontSize"));
  
         initListeners();
  
@@ -118,9 +120,9 @@ public class ShowImage extends JFrame implements ActionListener {
 		try {
 			long startTime = System.nanoTime();
 			
-			String imagePath = files.get(currentIndex++).toString();
-			if (currentIndex >= files.size()) 
-				currentIndex = 0;
+			String imagePath = files.get(nextIndex++).toString();
+			if (nextIndex >= files.size()) 
+				nextIndex = 0;
 			System.out.println(imagePath);
 			
 			Image image = new Image(imagePath);
@@ -128,7 +130,7 @@ public class ShowImage extends JFrame implements ActionListener {
 			BufferedImage newScreenImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
 			image.drawScaledOnto(newScreenImage, this);
-			image.drawMetadataOnto(newScreenImage, excludedCaptionsList);
+			image.drawMetadataOnto(newScreenImage, excludedCaptionsList, fontSize);
 			
 			
 		    screenImage = newScreenImage;
@@ -153,8 +155,10 @@ public class ShowImage extends JFrame implements ActionListener {
 	}
 
 	void doLeft() {
-		currentIndex = currentIndex - 2;
-		if (currentIndex < 0) currentIndex = files.size() - 1;
+		//System.out.println("doLeft before index = " + currentIndex);
+		nextIndex = nextIndex - 2;  
+		if (nextIndex < 0) nextIndex = nextIndex + files.size();
+		//System.out.println("doLeft after index = " + currentIndex);
 		doRight();
 	}
 	
@@ -178,6 +182,14 @@ public class ShowImage extends JFrame implements ActionListener {
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_KP_RIGHT) {
 				doRight();
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_PAUSE) {
+				if (timer.isRunning()) {
+					timer.stop();
+				}
+				else {
+					timer.start();
+				}
 			}
 			
 		}

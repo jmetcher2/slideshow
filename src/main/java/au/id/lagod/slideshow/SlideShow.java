@@ -68,7 +68,6 @@ public class SlideShow {
 
 		ImageFileLister lister = new ImageFileLister(files, fileGlob);
 		Files.walkFileTree(startingPath, lister);
-		files.addAll(lister.getFiles());
 		
         if (files.size() == 0) {
         	System.out.println("No files found in " + startingPath + " with pattern " + fileGlob);
