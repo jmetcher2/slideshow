@@ -13,10 +13,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.drew.imaging.ImageProcessingException;
 
 public class SlideShow {
 	
+	final static Logger logger = LoggerFactory.getLogger(SlideShow.class);
+
 	public static void nudgeScreenSaver() {
 		// Generate activity to keep the screensaver from triggering
 		Robot r;
@@ -36,7 +41,7 @@ public class SlideShow {
 		Properties props;
 		try {
 			props = loadProperties(propFileName);
-			System.out.println(props.toString());
+			logger.info(props.toString());
 
 			List<Path> files = loadFilenames(props);
 			
@@ -70,7 +75,7 @@ public class SlideShow {
 		Files.walkFileTree(startingPath, lister);
 		
         if (files.size() == 0) {
-        	System.out.println("No files found in " + startingPath + " with pattern " + fileGlob);
+        	logger.warn("No files found in " + startingPath + " with pattern " + fileGlob);
         	System.exit(0);
         }
         

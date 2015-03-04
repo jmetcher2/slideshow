@@ -19,6 +19,9 @@ import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.drew.imaging.ImageProcessingException;
 
 public class ShowImage extends JFrame implements ActionListener {
@@ -26,6 +29,8 @@ public class ShowImage extends JFrame implements ActionListener {
 	/**
 	 * 
 	 */
+	final static Logger logger = LoggerFactory.getLogger(ShowImage.class);
+	
 	private static final long serialVersionUID = 1L;
 	private int w;
 	private int h;
@@ -64,14 +69,14 @@ public class ShowImage extends JFrame implements ActionListener {
         this.setVisible(true);
  
         // switching to fullscreen mode 
-        System.out.println("Full screen supported: " + GraphicsEnvironment.getLocalGraphicsEnvironment().
+        logger.info("Full screen supported: " + GraphicsEnvironment.getLocalGraphicsEnvironment().
         getDefaultScreenDevice().isFullScreenSupported());
         GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
  
         // getting display resolution: width and height 
         w = this.getWidth();
         h = this.getHeight();
-        System.out.println("Display resolution: " + String.valueOf(w) + "x" + String.valueOf(h));
+        logger.info("Display resolution: " + String.valueOf(w) + "x" + String.valueOf(h));
 	}
 
 
@@ -102,7 +107,7 @@ public class ShowImage extends JFrame implements ActionListener {
             
         }
         else {
-        	System.out.println("screenImage is null");
+        	logger.debug("screenImage is null");
         }
     }
 
@@ -123,7 +128,7 @@ public class ShowImage extends JFrame implements ActionListener {
 			String imagePath = files.get(nextIndex++).toString();
 			if (nextIndex >= files.size()) 
 				nextIndex = 0;
-			System.out.println(imagePath);
+			logger.debug(imagePath);
 			
 			Image image = new Image(imagePath);
 	
@@ -138,7 +143,7 @@ public class ShowImage extends JFrame implements ActionListener {
 		    long endTime = System.nanoTime();
 		    long duration = (endTime - startTime)/1000000;  //divide by 1000000 to get milliseconds.
 		    
-		    System.out.println("next image took " + duration + " milliseconds");
+		    logger.debug("next image took " + duration + " milliseconds");
 		}
 		// convert checked to unchecked exceptions
 		catch (Exception e) {
@@ -155,10 +160,8 @@ public class ShowImage extends JFrame implements ActionListener {
 	}
 
 	void doLeft() {
-		//System.out.println("doLeft before index = " + currentIndex);
 		nextIndex = nextIndex - 2;  
 		if (nextIndex < 0) nextIndex = nextIndex + files.size();
-		//System.out.println("doLeft after index = " + currentIndex);
 		doRight();
 	}
 	

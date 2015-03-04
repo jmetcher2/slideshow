@@ -5,10 +5,15 @@ import java.awt.event.MouseListener;
 
 import javax.swing.SwingUtilities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 final class ShowImageMouseListener implements MouseListener {
 	/**
 	 * 
 	 */
+	final static Logger logger = LoggerFactory.getLogger(ShowImageMouseListener.class);
+
 	private final ShowImage mouseListener;
 
 	/**
@@ -20,7 +25,7 @@ final class ShowImageMouseListener implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("Mouse button clicked: " + e.getButton());
+		logger.debug("Mouse button clicked: " + e.getButton());
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			mouseListener.doLeft();
 		}

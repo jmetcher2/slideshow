@@ -14,12 +14,17 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifIFD0Directory;
 
 public class Image {
+
+	final static Logger logger = LoggerFactory.getLogger(Image.class);
 
 	private BufferedImage img;
 	private Metadata metadata;
@@ -33,10 +38,6 @@ public class Image {
 			File imgFile = new File(imagePath);
 			img = ImageIO.read(imgFile);
 			metadata = ImageMetadataReader.readMetadata(imgFile);
-
-			//System.out.println(tags);
-			//System.out.println(caption);
-			//System.out.println(date);
 
 		} catch (IOException | ImageProcessingException e) {
 			// TODO Auto-generated catch block
@@ -62,7 +63,7 @@ public class Image {
 		double translateX = (w - scaledWidth)/2;
 		double translateY = (h - scaledHeight)/2;
 		
-		System.out.println(heightRatio + " " + widthRatio + " " + ratio + " " + scaledHeight + " " + scaledWidth + " " + translateY + " " + translateX);
+		logger.debug(heightRatio + " " + widthRatio + " " + ratio + " " + scaledHeight + " " + scaledWidth + " " + translateY + " " + translateX);
 
 		g.drawImage(img, (int) translateX, (int) translateY, (int) scaledWidth, (int) scaledHeight, Color.black, showImage);
 	}
@@ -89,6 +90,10 @@ public class Image {
 		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
 		dateFormat.applyPattern("yyyy, MMMMM dd (h:mm a)");
 		String dateString = dateFormat.format(date);
+
+		logger.debug(tags);
+		logger.debug(caption);
+		logger.debug(dateString);
 
 		Integer baseLine = fontSize;
 		Integer lineSpacing = (int) (fontSize*1.5);
