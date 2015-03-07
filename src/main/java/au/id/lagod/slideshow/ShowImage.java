@@ -1,6 +1,10 @@
 package au.id.lagod.slideshow;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,6 +44,7 @@ public class ShowImage extends JFrame implements ActionListener {
 	private int nextIndex = 0;
 	private List<String> excludedCaptionsList;
 	private Integer fontSize;
+	private Boolean paused = false;
 
    // Class constructor  
 	ShowImage(Properties props, List<Path> files) throws IOException, ImageProcessingException {
@@ -97,13 +102,25 @@ public class ShowImage extends JFrame implements ActionListener {
 	public void paint (Graphics g) { 
         if (screenImage != null) { // if screenImage is not null (image loaded and ready)
         	
-            g.drawImage(screenImage, // draw it  
+        	Graphics2D g2d = (Graphics2D) g;
+         	
+            g2d.drawImage(screenImage, // draw it  
                         w/2 - screenImage.getWidth(this) / 2, // at the center  
                         h/2 - screenImage.getHeight(this) / 2, // of screen 
                         this);
             // to draw image at the center of screen 
             // we calculate X position as a half of screen width minus half of image width 
             // Y position as a half of screen height minus half of image height
+            
+            if (paused) {
+               	Composite originalComposite = g2d.getComposite();
+            	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+            	
+            	drawPause(g2d);
+            	
+                g2d.setComposite(originalComposite);
+            }
+            
             
         }
         else {
@@ -165,6 +182,18 @@ public class ShowImage extends JFrame implements ActionListener {
 		doRight();
 	}
 	
+	private void drawPause(Graphics g) {
+		int rectWidth = w/100;
+		int rectHeight = rectWidth * 4;
+		int x = (int) Math.round(w - rectWidth*3 - 20);
+		int y = (int) Math.round(h - rectHeight - 20);
+		System.out.println(x + " " + y);
+		
+		g.setColor(Color.WHITE);
+		g.fillRect(x, y, rectWidth, rectHeight);
+		g.fillRect(x + 2*rectWidth, y, rectWidth, rectHeight);
+	}
+	
 	public final class ShowImageKeyListener implements KeyListener {
 		@Override
 		public void keyTyped(KeyEvent e) {
@@ -188,14 +217,19 @@ public class ShowImage extends JFrame implements ActionListener {
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_PAUSE) {
 				if (timer.isRunning()) {
+					paused = true;
 					timer.stop();
+					repaint();
 				}
 				else {
+					paused = false;
 					timer.start();
+					repaint();
 				}
 			}
 			
 		}
+
 
 	}
 
