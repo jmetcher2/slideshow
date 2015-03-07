@@ -55,9 +55,9 @@ Commands
 --------
 esc key or middle mouse click = exit
 
-left arrow or left mouse click = previous photo
+left arrow or click in left half of screen = previous photo
 
-right arrow or right mouse click = next photo
+right arrow or click in right half of screen = next photo
 
 pause key = pause/resume the slideshow
 
