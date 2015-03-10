@@ -43,11 +43,11 @@ final class ShowImageMouseListener implements MouseListener {
 	}
 
 	private boolean isRightRegion(MouseEvent e) {
-		return e.getXOnScreen() <= (showImage.getWidth() /2);
+		return e.getXOnScreen() >= (showImage.getWidth() /2);
 	}
 
 	private boolean isLeftRegion(MouseEvent e) {
-		return e.getXOnScreen() > (showImage.getWidth() /2);
+		return e.getXOnScreen() < (showImage.getWidth() /2);
 	}
 
 	@Override
