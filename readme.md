@@ -53,13 +53,13 @@ Configuration options are not hot-reloaded.  If you edit the config file, close 
 
 Commands
 --------
-esc key or middle mouse click = exit
+esc key, X key or middle mouse click = exit
 
 left arrow or click in left half of screen = previous photo
 
 right arrow or click in right half of screen = next photo
 
-pause key = pause/resume the slideshow
+pause key or P key = pause/resume the slideshow
 
 To build
 ---------

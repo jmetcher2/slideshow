@@ -207,7 +207,7 @@ public class ShowImage extends JFrame implements ActionListener {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode() == KeyEvent.VK_X)
 				System.exit(0);
 			else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_KP_LEFT) {
 				doLeft();
@@ -215,7 +215,7 @@ public class ShowImage extends JFrame implements ActionListener {
 			else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_KP_RIGHT) {
 				doRight();
 			}
-			else if (e.getKeyCode() == KeyEvent.VK_PAUSE) {
+			else if (e.getKeyCode() == KeyEvent.VK_PAUSE || e.getKeyCode() == KeyEvent.VK_P) {
 				if (timer.isRunning()) {
 					paused = true;
 					timer.stop();
