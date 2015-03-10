@@ -4,3 +4,5 @@ delay=3
 shuffle=true
 exclude_captions=OLYMPUS DIGITAL CAMERA
 fontSize=25
+exclude_tags=.*
+include_tags=/Occasions/.*,/Places/.*

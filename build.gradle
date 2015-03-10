@@ -12,7 +12,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'java-library-distribution'
 
-version = '0.001'
+version = '0.002'
 
 // In this section you declare where to find the dependencies of your project
 repositories {

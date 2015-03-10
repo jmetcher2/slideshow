@@ -46,12 +46,16 @@ public class ShowImage extends JFrame implements ActionListener {
 	private Integer fontSize;
 	private Boolean paused = false;
 
+	private TagFilter tagFilter;
+
    // Class constructor  
 	ShowImage(Properties props, List<Path> files) throws IOException, ImageProcessingException {
 		this.files = files;
 
 		excludedCaptionsList = Arrays.asList(props.getProperty("exclude_captions").split("\\s*,\\s*"));
 		fontSize = Integer.decode(props.getProperty("fontSize"));
+		
+		tagFilter = new TagFilter(props.getProperty("exclude_tags"), props.getProperty("include_tags"));
  
         initListeners();
  
@@ -152,7 +156,7 @@ public class ShowImage extends JFrame implements ActionListener {
 			BufferedImage newScreenImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
 			image.drawScaledOnto(newScreenImage, this);
-			image.drawMetadataOnto(newScreenImage, excludedCaptionsList, fontSize);
+			image.drawMetadataOnto(newScreenImage, excludedCaptionsList, tagFilter, fontSize);
 			
 			
 		    screenImage = newScreenImage;

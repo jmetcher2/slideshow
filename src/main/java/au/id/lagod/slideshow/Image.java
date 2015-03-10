@@ -29,6 +29,12 @@ public class Image {
 	private BufferedImage img;
 	private Metadata metadata;
 
+	private List<String> tagList;
+
+	private String caption;
+
+	private Date date;
+
 	public BufferedImage getImg() {
 		return img;
 	}
@@ -38,11 +44,36 @@ public class Image {
 			File imgFile = new File(imagePath);
 			img = ImageIO.read(imgFile);
 			metadata = ImageMetadataReader.readMetadata(imgFile);
-
+			
+			extractMetaData();
+			
 		} catch (IOException | ImageProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private void extractMetaData() {
+		ExifIFD0Directory exifid0 = metadata.getDirectory(ExifIFD0Directory.class);
+		
+		String tags = "";
+		byte[] bytes = exifid0.getByteArray(ExifIFD0Directory.TAG_WIN_KEYWORDS);
+		if (bytes != null) {
+			try {
+				tags = new String(bytes, "UTF-16LE");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		tagList = Arrays.asList(tags.split(";"));
+
+		caption = exifid0.getString(ExifIFD0Directory.TAG_IMAGE_DESCRIPTION);
+		if (caption == null) {
+			caption = "";
+		}
+		caption = caption.trim();
+		date = exifid0.getDate(ExifIFD0Directory.TAG_DATETIME);
 	}
 
 	public void drawScaledOnto(BufferedImage dest, ShowImage showImage) {
@@ -68,30 +99,14 @@ public class Image {
 		g.drawImage(img, (int) translateX, (int) translateY, (int) scaledWidth, (int) scaledHeight, Color.black, showImage);
 	}
 	
-	public void drawMetadataOnto(BufferedImage dest, List<String> excludedCaptionsList, Integer fontSize)
+	public void drawMetadataOnto(BufferedImage dest, List<String> excludedCaptionsList, TagFilter tagFilter, Integer fontSize)
 			throws UnsupportedEncodingException {
 		Graphics g = dest.getGraphics();
 
-		ExifIFD0Directory exifid0 = metadata.getDirectory(ExifIFD0Directory.class);
-		
-		String tags = "";
-		byte[] bytes = exifid0.getByteArray(ExifIFD0Directory.TAG_WIN_KEYWORDS);
-		if (bytes != null) {
-			tags = new String(bytes, "UTF-16LE");
-		}
-		List<String> tagList = Arrays.asList(tags.split(";"));
-		
-		String caption = exifid0.getString(ExifIFD0Directory.TAG_IMAGE_DESCRIPTION);
-		if (caption == null) {
-			caption = "";
-		}
-		caption = caption.trim();
-		Date date = exifid0.getDate(ExifIFD0Directory.TAG_DATETIME);
 		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
 		dateFormat.applyPattern("yyyy, MMMMM dd (h:mm a)");
 		String dateString = dateFormat.format(date);
 
-		logger.debug(tags);
 		logger.debug(caption);
 		logger.debug(dateString);
 
@@ -108,8 +123,10 @@ public class Image {
 	    	g.drawString(caption, 10, baseLine);
 	    }
 	    for (String tag: tagList) {
-		    baseLine += lineSpacing;
-		    g.drawString(tag, 10, baseLine);
+	    	if (tagFilter.showTag(tag)) {
+	    		baseLine += lineSpacing;
+	    		g.drawString(tag, 10, baseLine);
+	    	}
 	    }
 	}
 
