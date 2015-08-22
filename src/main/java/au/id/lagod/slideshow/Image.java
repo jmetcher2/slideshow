@@ -103,9 +103,15 @@ public class Image {
 			throws UnsupportedEncodingException {
 		Graphics g = dest.getGraphics();
 
-		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
-		dateFormat.applyPattern("yyyy, MMMMM dd (h:mm a)");
-		String dateString = dateFormat.format(date);
+		String dateString;
+		if (date == null) {
+			dateString = "";
+		}
+		else {
+			SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
+			dateFormat.applyPattern("yyyy, MMMMM dd (h:mm a)");
+			dateString = dateFormat.format(date);
+		}
 
 		logger.debug(caption);
 		logger.debug(dateString);
